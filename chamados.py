@@ -56,7 +56,7 @@ chamados = [
 # 3 - pesquisa por status
 # 4 - chamados urgentes (critico e aberto)
 # 5 - abrir chamado
-# 6 - resolver chamado (Em pregresso)
+# 6 - resolver chamado (vai deixar "Em pregresso")
 # 7 - fechar chamado
 # 0 - sair do sistema
 
@@ -72,7 +72,49 @@ def pesquisa_prioridade():
         if chamado["prioridade"] == prioridade:
             print(chamado)
 
+def pesquisa_status():
+    status = str(input("Qual o status que voce quer buscar (Aberto, Fechado, Em progresso): "))
+    for chamado in chamados:
+        if chamado["status"] == status:
+            print(chamado)
+
+def chamados_urgentes():
+    for chamado in chamados:
+        if chamado["prioridade"] == "Crítica" and chamado["status"] == "Aberto":
+            print(chamado)
+
+def abrir_chamados():
+    id = chamados[-1]["id"] # a variavel id recebe o ultimo id do chamado com a indicie -1 e logo abaixo soma esse ultimo indice a +1
+    novo_titulo = str(input("Qual o titulo: "))
+    nova_prioridade = str(input("Qual a prioridade (Baixa, Média, Alta ou Crítica): "))
+    novo_status = str(input("Qual o status do chamado (Aberto, Em progresso ou Fechado): "))
+    novo_usuario = str(input("Qual o usuario: ")) 
+    id += 1
+    novo_chamado = {
+        "id": id,
+        "titulo": novo_titulo,
+        "prioridade": nova_prioridade,
+        "status": novo_status,
+        "usuario": novo_usuario
+    }
+    chamados.append(novo_chamado)
+    print(chamados)
+
+def resolver_chamado():
+    resolver = str(input("Qual o usuario que voce quer resolver o chamado: "))
+    for chamado in chamados: 
+        if chamado["usuario"] == resolver:
+            chamado["status"] = "Em progresso"
+            print(chamado)
+
+def fechar_chamado():
+    fechar_chamado = str(input("Qual o usuario que voce quer fechar o chamado: "))
+    for chamado in chamados:
+        if chamado["usuario"] == fechar_chamado:
+            chamado["status"] = "Fechado"
+            print(chamado)
 while True:
+
     print("1 - Pesquisar por usuario")
     print("2 - Pesquisar por prioridade")
     print("3 - Pesquisar por status")
@@ -90,21 +132,24 @@ while True:
     elif opcao == "2":
         pesquisa_prioridade()
         
-    #elif opcao == "3":
+    elif opcao == "3":
+        pesquisa_status()    
         
+    elif opcao == "4":
+        chamados_urgentes()
+
+    elif opcao == "5":
+        abrir_chamados()   
         
-    #elif opcao == "4":
-        
-    #elif opcao == "5":
-        
-        
-    #elif opcao == "6":
-        
-    #elif opcao == "7":
-        
-    #elif opcao == "0":
-        #print("Saindo do Sistema...")
-        #break
-    #else:
-        #print("opcao invalida, tente novamente!")
-        #break
+    elif opcao == "6":
+        resolver_chamado()
+
+    elif opcao == "7":
+        fechar_chamado()
+
+    elif opcao == "0":
+        print("Saindo do Sistema...")
+        break
+    else:
+        print("opcao invalida, tente novamente!")
+        break
